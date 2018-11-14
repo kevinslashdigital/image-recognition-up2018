@@ -48,3 +48,7 @@ if you have any question, you can send to these emails.
 - email1@gmail.com
 - email2@gmail.com
 - email3@gmail.com  
+
+## references ##
+https://www.youtube.com/watch?v=UkzhouEk6uY&index=3&list=PLZbbT5o_s2xrwRnXk_yCPtnqqo4_u2YGL
+https://github.com/spmallick/learnopencv/blob/master/

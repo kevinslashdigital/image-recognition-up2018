@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
-from model.cnn import CNN
-
+from model.VGG16 import VGG16
+import pickle
 num_cores = 4
 num_GPU = 0
 num_CPU = 4
@@ -21,9 +21,10 @@ num_CPU = 4
 def train_model():
   train_datagen = ImageDataGenerator(
     rescale = 1./255,
-    shear_range = 0.2,
-    zoom_range = 0.2,
-    horizontal_flip = True)
+    shear_range = 0.1,
+    zoom_range = 0.1,
+    horizontal_flip = True,
+    fill_mode="nearest")
 
   test_datagen = ImageDataGenerator(rescale = 1./255)
   # load train data 
@@ -31,26 +32,47 @@ def train_model():
     'dataset/train',
     target_size = (64, 64),
     batch_size = 32,
-    class_mode = 'binary')
+    shuffle=True,
+    seed = 7,
+    class_mode = 'categorical')
   # load validation data
   validation_set = test_datagen.flow_from_directory(
     'dataset/validation',
     target_size = (64, 64),
     batch_size = 32,
-    class_mode = 'binary')
-  # test_set = test_datagen.flow_from_directory(
-  #   'dataset/test',
-  #   target_size = (64, 64),
-  #   batch_size = 32,
-  #   class_mode = 'binary')
+    shuffle=True,
+    seed = 7,
+    class_mode = 'categorical')
 
-  model = CNN().create_model((64, 64,3),3)
-  model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+  print(validation_set.class_indices)
+  print(validation_set.classes)
+  print(validation_set.num_classes)
+
+  imgs,labels = next(training_set)
+  print(labels)
+
+  file_Name = 'label_match.pickle'
+  fileObject = open(file_Name,'wb') 
+  # this writes the object a to the file named 'testfile'
+  pickle.dump(validation_set.class_indices,fileObject)   
+  # here we close the fileObject
+  fileObject.close()
+
+
+  nClasses = validation_set.num_classes
+
+  print('nClasses',nClasses)
+  model = VGG16().create_model((64, 64,3),nClasses)
+  model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
   model.fit_generator(training_set,
     steps_per_epoch = 20,
-    nb_epoch = 5,
+    nb_epoch = 80,
     validation_data = validation_set,
     verbose=1)
+
+  # save the model to disk
+  print("[INFO] serializing network...")
+  model.save('lenet.model')
     
 if __name__ == "__main__":
     # construct the argument parse and parse the arguments
