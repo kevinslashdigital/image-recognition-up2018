@@ -12,6 +12,7 @@ app = Flask(__name__)
 
 # cd ai
 # FLASK_APP=app.py flask run
+# postman https://www.getpostman.com/collections/888b925425a9151ee06e
 @app.route("/")
 def hello():
   return "Hello World!"
