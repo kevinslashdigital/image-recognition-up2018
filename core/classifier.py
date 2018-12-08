@@ -37,4 +37,4 @@ def classify(image_path=None,input_shape=None):
 
 if __name__ == "__main__":
   # construct the argument parse and parse the arguments
-  classify('dataset/test/food/1_5.jpg',(64, 64))
+  classify('dataset/test/ត/ត-16009.png',(48, 48))

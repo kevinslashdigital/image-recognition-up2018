@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
-from model.VGG16 import VGG16
+# from model.cnn import CNN
+# from model.VGG16 import VGG16
+from model.lenet import Lenet
 import pickle
 num_cores = 4
 num_GPU = 0
@@ -30,7 +32,7 @@ def train_model():
   # load train data 
   training_set = train_datagen.flow_from_directory(
     'dataset/train',
-    target_size = (64, 64),
+    target_size = (48, 48),
     batch_size = 32,
     shuffle=True,
     seed = 7,
@@ -38,7 +40,7 @@ def train_model():
   # load validation data
   validation_set = test_datagen.flow_from_directory(
     'dataset/validation',
-    target_size = (64, 64),
+    target_size = (48, 48),
     batch_size = 32,
     shuffle=True,
     seed = 7,
@@ -62,13 +64,13 @@ def train_model():
   nClasses = validation_set.num_classes
 
   print('nClasses',nClasses)
-  model = VGG16().create_model((64, 64,3),nClasses)
+  model = Lenet().create_model((48, 48,3),nClasses)
   model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
   model.fit_generator(training_set,
-    steps_per_epoch = 20,
-    nb_epoch = 80,
+    steps_per_epoch = 9,
+    nb_epoch = 100,
     validation_data = validation_set,
-    verbose=1)
+    verbose = 1)
 
   # save the model to disk
   print("[INFO] serializing network...")
