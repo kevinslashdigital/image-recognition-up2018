@@ -3,12 +3,14 @@ import json
 from flask import request
 from flask import jsonify
 from flask import Flask
+from flask_cors import CORS
 from hashlib import sha1
 import numpy as np
 import os
 import datetime
 
 app = Flask(__name__)
+CORS(app)
 
 # cd ai
 # FLASK_APP=app.py flask run
@@ -37,13 +39,17 @@ def get_path():
 
 @app.route('/classify', methods=['POST'])
 def classify():
-  target_photo = get_path()
-  # print("files",len(flask.request.files))
-  photo = request.files.get('photo').read()
-  # target_tmp = os.path.join(TMP_DIR, '{0}.jpg'.format(sha1sum))
-  with open(target_photo, 'wb+') as fp:
-    fp.write(photo)
+  try:
 
+    target_photo = get_path()
+    print(target_photo)
+    print("files",len(request.files))
+    photo = request.files.get('photo').read()
+    # target_tmp = os.path.join(TMP_DIR, '{0}.jpg'.format(sha1sum))
+    with open(target_photo, 'wb+') as fp:
+      fp.write(photo)
+  except Exception as e:
+    print(e)
   response = {
     "prediction" : 'hello',
     "status" :"200"
