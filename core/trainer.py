@@ -29,6 +29,7 @@ def train_model():
     fill_mode="nearest")
 
   test_datagen = ImageDataGenerator(rescale = 1./255)
+
   # load train data 
   training_set = train_datagen.flow_from_directory(
     'dataset/train',
@@ -37,6 +38,7 @@ def train_model():
     shuffle=True,
     seed = 7,
     class_mode = 'categorical')
+
   # load validation data
   validation_set = test_datagen.flow_from_directory(
     'dataset/validation',
@@ -67,14 +69,14 @@ def train_model():
   model = Lenet().create_model((48, 48,3),nClasses)
   model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
   model.fit_generator(training_set,
-    steps_per_epoch = 9,
-    nb_epoch = 100,
+    steps_per_epoch = 30,
+    nb_epoch = 50,
     validation_data = validation_set,
     verbose = 1)
 
   # save the model to disk
   print("[INFO] serializing network...")
-  # model.save('/training-model/lenet.model')
+  model.save('training-model/lenet.model')
     
 if __name__ == "__main__":
     # construct the argument parse and parse the arguments
