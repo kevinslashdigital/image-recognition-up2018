@@ -63,10 +63,10 @@ export class HomePage extends React.Component<{}, State> {
             //   <div className="previewText">Please select an Image for Preview</div>
             // );
           }
-          let className = '';
-          if (this.props.isActive) {
-            className += ' text-none';
-          }
+          // let className = '';
+          // if (this.props.isActive) {
+          //   className += ' text-none';
+          // }
           return (
           <form onSubmit={this.onFormSubmit}>
           <div>
@@ -82,7 +82,7 @@ export class HomePage extends React.Component<{}, State> {
               <div className="row">
                 <div className="col-lg-12">
                   <h1 className="page-header text-left">
-                    Recognition Your Consonant as image{" "}
+                    Recognize your consonant as image{" "}
                   </h1>
                 </div>
                 </div>
