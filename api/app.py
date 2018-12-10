@@ -1,36 +1,57 @@
 import json
-from ..core.classifier import Classifier
+# from ..core.classifier import Classifier
 from flask import request
 from flask import jsonify
 from flask import Flask
+from flask_cors import CORS
+from hashlib import sha1
+import numpy as np
+import os
+import datetime
+
 app = Flask(__name__)
+CORS(app)
 
 # cd ai
-# FLASK_APP=hello.py flask run
-
+# FLASK_APP=app.py flask run
+# postman https://www.getpostman.com/collections/888b925425a9151ee06e
 @app.route("/")
 def hello():
   return "Hello World!"
 
+def get_path():
+  DATA_DIR = os.environ.get('DATA_DIR', 'data')
+  format = "%y%m%d"
+  now = datetime.datetime.utcnow().strftime(format)
+  upload_key = 'image'
+  target = os.path.join(DATA_DIR,"{}/{}".format(now, upload_key))
+  print(target)
+  try:
+    os.makedirs(target)
+  except:
+    print('cannot create file')
+
+  # sha1sum = sha1(photo).hexdigest()
+  # nparr = np.fromstring(photo, np.uint8)
+
+  target_photo = os.path.join(target, '{0}.jpg'.format(now))
+  return target_photo
+
 @app.route('/classify', methods=['POST'])
 def classify():
-  body = request.get_json()
-  # get from body
-  doc = body['doc']
-  print(body['doc'])
-  config = {
-    'text_dir': 'data/dataset/doc',
-    'dataset': 'data/matrix',
-    'bag_of_words': 'data/bag_of_words',
-    'train_model': 'data/model/doc.model',
-    'is_unicode': False
-  }
+  try:
 
-  cf = Classifier(**config)
-  pred = cf.classify(doc)
-
+    target_photo = get_path()
+    print(target_photo)
+    print("files",len(request.files))
+    photo = request.files.get('photo').read()
+    # target_tmp = os.path.join(TMP_DIR, '{0}.jpg'.format(sha1sum))
+    with open(target_photo, 'wb+') as fp:
+      fp.write(photo)
+  except Exception as e:
+    print(e)
   response = {
-    "prediction" : pred[0],
+    "prediction" : 'hello',
     "status" :"200"
   }
 

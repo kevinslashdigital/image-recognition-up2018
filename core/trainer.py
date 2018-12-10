@@ -74,7 +74,7 @@ def train_model():
 
   # save the model to disk
   print("[INFO] serializing network...")
-  model.save('lenet.model')
+  # model.save('/training-model/lenet.model')
     
 if __name__ == "__main__":
     # construct the argument parse and parse the arguments
