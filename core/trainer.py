@@ -6,8 +6,8 @@ import numpy as np
 import tensorflow as tf
 from keras import backend as K
 # from model.cnn import CNN
-# from model.VGG16 import VGG16
-from model.lenet import Lenet
+from model.VGG16 import VGG16
+# from model.lenet import Lenet
 import pickle
 num_cores = 4
 num_GPU = 0
@@ -28,7 +28,13 @@ def train_model():
     horizontal_flip = True,
     fill_mode="nearest")
 
-  test_datagen = ImageDataGenerator(rescale = 1./255)
+  # test_datagen = ImageDataGenerator(rescale = 1./255)
+
+  test_datagen = ImageDataGenerator(
+    shear_range = 0.1,
+    zoom_range = 0.1,
+    horizontal_flip = True,
+    fill_mode="nearest")
 
   # load train data 
   training_set = train_datagen.flow_from_directory(
@@ -66,17 +72,18 @@ def train_model():
   nClasses = validation_set.num_classes
 
   print('nClasses',nClasses)
-  model = Lenet().create_model((48, 48,3),nClasses)
+  model = VGG16().create_model((48, 48, 3), nClasses)
   model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
   model.fit_generator(training_set,
-    steps_per_epoch = 30,
-    nb_epoch = 50,
+    steps_per_epoch = 20,
+    nb_epoch = 100,
+    validation_steps = 5,
     validation_data = validation_set,
     verbose = 1)
 
   # save the model to disk
   print("[INFO] serializing network...")
-  model.save('training-model/lenet.model')
+  model.save('training-model/vgg1.model')
     
 if __name__ == "__main__":
     # construct the argument parse and parse the arguments

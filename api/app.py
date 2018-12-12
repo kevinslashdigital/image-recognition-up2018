@@ -2,7 +2,6 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import json
-# from ..core.classifier import Classifier
 from flask import request
 from flask import jsonify
 from flask import Flask, Response
@@ -20,12 +19,12 @@ app = Flask(__name__)
 CORS(app)
 
 try:
-  model = load_model('../core/training-model/lenet.model')
+  model = load_model('../core/training-model/vgg.model')
 except Exception as e:
   print(e)
   raise Exception("Model not found!")
 # cd ai
-# FLASK_APP=app.py flask run
+# FLASK_APP =a pp.py flask run
 # postman https://www.getpostman.com/collections/888b925425a9151ee06e
 @app.route("/")
 def hello():
@@ -68,19 +67,23 @@ def classification():
   # except Exception as e:
   #   print(e)
 
+  # response = {
+  #   "prediction" : {
+  #     "label": predic[0],
+  #     "prob":  predic[1].tolist()
+  #   },
+  #   "similarity": {
+  #     "labels": predic[2],
+  #     "probs": predic[3].tolist(),
+  #     "pair": predic[4]
+  #   },
+  #   "status" :"200"
+  # }
+
   response = {
-    "prediction" : {
-      "label": predic[0],
-      "prob":  predic[1].tolist()
-    },
-    "similarity": {
-      "labels": predic[2],
-      "probs": predic[3].tolist(),
-      "pair": predic[4]
-    },
+    "result": predic[4],
     "status" :"200"
   }
-
   return Response(json.dumps(response), mimetype="applicaition/json")
  
 if __name__ == "__main__":

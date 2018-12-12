@@ -13,7 +13,7 @@ def get_label(labels,predict):
 
 def classify(image_data=None, image_path=None,input_shape=None, model=None, labels=None):
   if model == None:
-    model = load_model('training-model/lenet.model')
+    model = load_model('training-model/cnn.model')
   image = image_data
   if image_path != None:
     image = cv2.imread(image_path)

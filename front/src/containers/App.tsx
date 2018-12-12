@@ -28,9 +28,10 @@ class App extends React.Component {
         </p> */}
         <div className="wrapper">
           <Navigation />
-          <div className="page-wrapper">
+          <HomePage />
+          {/* <div className="page-wrapper">
             <HomePage />
-          </div>
+          </div> */}
         </div>
       </div>;
   }
