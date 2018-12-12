@@ -48,8 +48,18 @@ $(".upload_btn").on('click', function(e){
 
 $("#form_submit").bind('submit', function(e){
   e.preventDefault();
-  // formData.set("email", e.target.email.value);
-  // file_select_handler(formData)
+  // when request finish
+  xhr.onreadystatechange = function(e1) {
+    if (this.readyState == 4)  {
+        if (this.status == 200){
+          var text = 'Transaction completed: '  //+ this.responseText;
+          var data_r = this.response
+          var data = $.parseJSON(data_r);
+          console.log(data)
+        }else
+          console.log('error')
+    }
+  };
   var xhr = new XMLHttpRequest();
   xhr.open('POST', `${API_URL}/classify`, true);
   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
