@@ -106,14 +106,15 @@ export class HomePage extends React.Component<{}, State> {
       $imagePreview = <img src={imagePreviewUrl} />;
     }
     return (
+      
       <form onSubmit={this.onFormSubmit}>
-        <div>
+        <div >
           <div className="col-lg-12">
             <h1 className="page-header text-left">
               Khmer Alphabets Image Recognition{" "}
             </h1>
           </div>
-              
+        <div className="col-lg-12 col-md-12">     
           <div className="col-lg-3 col-md-3">
             <label htmlFor="image-input" className="panel panel-primary add-image">
               {
@@ -145,7 +146,10 @@ export class HomePage extends React.Component<{}, State> {
             </div>
           </div>
         </div>
+        </div>
       </form>
+
+
     )
   }
 }
